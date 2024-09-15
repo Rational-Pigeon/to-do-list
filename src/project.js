@@ -4,12 +4,14 @@ export class Project {
     constructor(id, title) {
         this.id = id;
         this.title = title;
+        this.nextTaskId = 0;
     }
 
     tasks = [];
 
     addTask(id, title, description, dueDate, priority, checklist) {
         this.tasks.push(new Task(id, title, description, dueDate, priority, checklist));
+        this.nextTaskId++;
     }
 
     removeTask(id) {
@@ -28,13 +30,14 @@ export class Project {
 }
 
 export class Projects {
-    constructor(id, projects = []) {
-        this.id = id;
+    constructor(projects = []) {
+        projects.length > 0 ? this.nextPrId = projects.at(-1).id + 1 : this.nextPrId = 0;
         this.projects = projects;
     }
 
     addProject(id, title) {
         this.projects.push(new Project(id, title))
+        this.nextPrId++;
     }
 
     removeProject(id) {

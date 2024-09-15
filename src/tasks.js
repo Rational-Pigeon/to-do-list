@@ -18,9 +18,11 @@ export class Task extends Subtask {
         this.dueDate = dueDate;
         this.priority = priority;
         this.checklist = checklist;
+        checklist.length > 0 ? this.nextSubtaskId = checklist.at(-1).id + 1 : this.nextSubtaskId = 0;
     }
     addSubtask(subtaskId, title) {
         this.checklist.push(new Subtask(subtaskId, title));
+        this.nextSubtaskId++;
     }
     removeSubtask(id) {
         this.checklist = this.checklist.filter(subtask => subtask.id !== id);
