@@ -20,8 +20,8 @@ export class Task extends Subtask {
         this.checklist = checklist;
         checklist.length > 0 ? this.nextSubtaskId = checklist.at(-1).id + 1 : this.nextSubtaskId = 0;
     }
-    addSubtask(subtaskId, title) {
-        this.checklist.push(new Subtask(subtaskId, title));
+    addSubtask(title) {
+        this.checklist.push(new Subtask(this.nextSubtaskId, title));
         this.nextSubtaskId++;
     }
     removeSubtask(id) {

@@ -9,8 +9,8 @@ export class Project {
 
     tasks = [];
 
-    addTask(id, title, description, dueDate, priority, checklist) {
-        this.tasks.push(new Task(id, title, description, dueDate, priority, checklist));
+    addTask(title, description, dueDate, priority, checklist) {
+        this.tasks.push(new Task(this.nextTaskId, title, description, dueDate, priority, checklist));
         this.nextTaskId++;
     }
 
@@ -35,8 +35,8 @@ export class Projects {
         this.projects = projects;
     }
 
-    addProject(id, title) {
-        this.projects.push(new Project(id, title))
+    addProject(title) {
+        this.projects.push(new Project(this.nextPrId, title))
         this.nextPrId++;
     }
 
