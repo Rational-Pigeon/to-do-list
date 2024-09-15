@@ -7,6 +7,44 @@
 </head>
 
 <body>
+    <div class="container">
+        <div class="projects">
+            <h2>Projects</h2>
+            <hr>
+            <div class="addpr">+ Add New Project</div>
+        </div>
+        <div class="tasks">
+            <h2 id="pr-title"></h2>
+            <hr>
+            <button class="addtask-btn">+ Add New Task</button>
+        </div>
+    </div>
+
+    <dialog class="pr-prompt">
+        <form class="pr-form" method="dialog">
+            <label for="pr-name">Project Title</label>
+            <input id="pr-name" type="text" required>
+            <button class="submit-btn submit-pr-btn" type="submit">submit</button>
+            <button class="cancel-btn pr-cancel-btn"> cancel</button>
+        </form>
+    </dialog>
+
+    <dialog class="task-prompt">
+        <form class="task-form" method="dialog">
+            <input id="input-title" type="text" required>
+            <textarea id="input-description" rows="4" cols="50"></textarea>
+            <input id="input-due" type="date">
+            <select id="input-priority" required>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <button id="subtask-btn">add subtask</button>
+
+            <button class="submit-btn submit-task-btn" type="submit">submit</button>
+            <button class="cancel-btn task-cancel-btn">cancel</button>
+        </form>
+    </dialog>
 </body>
 
 </html>
