@@ -172,3 +172,12 @@ h2 {
 .cancel-btn {
     background-color: var(--pink);
 }
+
+.more-info {
+    display: none;
+}
+
+.arrow {
+    cursor: pointer;
+    font-size: 16px;
+}
