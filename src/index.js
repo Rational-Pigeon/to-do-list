@@ -1,7 +1,9 @@
+import deleteIcon from "./icons/delete.svg";
 import "./styles.css";
 import { Projects, Project } from "./project.js";
 import { Subtask, Task } from "./tasks";
 import { renderProjects, renderTasks, currentPrId } from "./ui.js";
+import { saveProjects, loadProjects } from "./storage.js";
 
 export const projects = new Projects();
 const prDialog = document.querySelector(".pr-prompt");
@@ -66,7 +68,10 @@ addSubtaskBtn.addEventListener("click", (event) => {
     const stDiv = document.createElement("div");
     stDiv.innerHTML = `
     <input class="input-subtask" type="text">
+    <button type="button"><img src="${deleteIcon}" alt="Delete" width="20px" height="20px"/></button>
 `;
+    const stDelBtn = stDiv.children[1];
+    stDelBtn.addEventListener("click", () => stDiv.remove());
     taskDialog.appendChild(stDiv);
 });
 
