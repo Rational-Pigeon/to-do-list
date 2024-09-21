@@ -1,7 +1,6 @@
-import { Subtask, Task } from "./tasks";
-import { Project, Projects } from "./project";
 import deleteIcon from "./icons/delete.svg";
 import editIcon from "./icons/edit.svg";
+import { saveProjects } from "./storage.js";
 
 export let currentPrId;
 const projectsDiv = document.querySelector(".projects");
@@ -37,6 +36,7 @@ export function renderProjects(projects) {
         deleteBtn.addEventListener("click", () => {
             projects.removeProject(project.id)
             renderProjects(projects)
+            saveProjects(projects);
         });
 
         editBtn.addEventListener("click", () => {
@@ -44,7 +44,11 @@ export function renderProjects(projects) {
             document.querySelector("#new-pr-title").value = project.title;
             prEditDialog.showModal()
         });
-        prDiv.children[0].addEventListener("click", () => renderTasks(project));
+        prDiv.children[0].addEventListener("click", () => {
+            renderTasks(project, projects);
+            currentPrId = project.id;
+        }
+        );
 
 
         prDiv.appendChild(editBtn);
@@ -53,7 +57,7 @@ export function renderProjects(projects) {
     }
 }
 
-export function renderTasks(project) {
+export function renderTasks(project, projects) {
     clearElementsByClass(tasksDiv, "task-container")
     prTitle.textContent = project.title;
     currentPrId = project.id;
@@ -90,7 +94,7 @@ export function renderTasks(project) {
             todoItem.appendChild(dateInput);
             todoItem.appendChild(deleteTaskButton);
 
-            renderSubtasks(task, subtasksDiv);
+            renderSubtasks(task, subtasksDiv, projects);
 
             arrow.addEventListener("click", () => {
                 if (moreInfo.style.display === 'none' || moreInfo.style.display === '') {
@@ -102,13 +106,26 @@ export function renderTasks(project) {
                 }
             });
 
-            title.addEventListener("input", () => task.title = title.value);
-            prioritySelect.addEventListener("change", () => task.priority = prioritySelect.value);
-            dateInput.addEventListener("input", () => task.dueDate = dateInput.value);
-            description.addEventListener("input", () => task.description = description.value);
+            title.addEventListener("input", () => {
+                task.title = title.value
+                saveProjects(projects);
+            });
+            prioritySelect.addEventListener("change", () => {
+                task.priority = prioritySelect.value
+                saveProjects(projects);
+            });
+            dateInput.addEventListener("input", () => {
+                task.dueDate = dateInput.value;
+                saveProjects(projects);
+            });
+            description.addEventListener("input", () => {
+                task.description = description.value
+                saveProjects(projects);
+            });
             deleteTaskButton.addEventListener("click", () => {
                 project.removeTask(task.id);
-                renderTasks(project);
+                renderTasks(project, projects);
+                saveProjects(projects);
             });
 
             tasksDiv.appendChild(container);
@@ -134,7 +151,7 @@ function createPriorityElement(priority) {
     return prioritySelect;
 }
 
-function renderSubtasks(task, container) {
+function renderSubtasks(task, container, projects) {
     for (let subtask of task.checklist) {
         const stContainer = document.createElement("div");
         stContainer.classList.add("st-container");
@@ -148,7 +165,8 @@ function renderSubtasks(task, container) {
         subtaskDelBtn.addEventListener("click", () => {
             task.removeSubtask(subtask.id)
             clearElementsByClass(container, "st-container");
-            renderSubtasks(task, container);
+            renderSubtasks(task, container, projects);
+            saveProjects(projects);
         });
         container.appendChild(stContainer);
     }

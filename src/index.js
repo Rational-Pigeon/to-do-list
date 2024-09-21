@@ -1,11 +1,13 @@
 import deleteIcon from "./icons/delete.svg";
 import "./styles.css";
-import { Projects, Project } from "./project.js";
-import { Subtask, Task } from "./tasks";
-import { renderProjects, renderTasks, currentPrId } from "./ui.js";
-import { saveProjects, loadProjects } from "./storage.js";
+import { Subtask } from "./tasks";
+import { renderProjects, renderTasks, currentPrId } from "./ui";
+import { saveProjects, loadProjects } from "./storage";
+import { defaultData } from "./default.js";
 
-export const projects = new Projects();
+export let projects = loadProjects(); // Load projects from local storage
+
+
 const prDialog = document.querySelector(".pr-prompt");
 const taskDialog = document.querySelector(".task-prompt");
 const addPrBtn = document.querySelector(".addpr");
@@ -21,6 +23,12 @@ const cancelPrEditBtn = document.querySelector(".pr-cancel-edit-btn");
 const prEditDialog = document.querySelector(".pr-edit-prompt");
 const prEditForm = document.querySelector(".pr-edit-form");
 const addSubtaskBtn = document.querySelector("#subtask-btn");
+
+if (projects.projects.length === 0) {
+    // No projects in local storage, initialize with default data
+    projects = defaultData();
+    saveProjects(projects);  // Save default data to local storage
+}
 
 addPrBtn.addEventListener("click", () => prDialog.showModal());
 
@@ -43,7 +51,8 @@ submitPrBtn.addEventListener("click", (event) => {
     prForm.reset();
     renderProjects(projects);
     const project = projects.projects.find(p => p.title === title);
-    renderTasks(project);
+    renderTasks(project, projects);
+    saveProjects(projects);
 });
 
 
@@ -61,6 +70,7 @@ submitPrEditBtn.addEventListener("click", (event) => {
     renderProjects(projects);
     prEditDialog.close();
     prEditForm.reset();
+    saveProjects(projects);
 });
 
 addSubtaskBtn.addEventListener("click", (event) => {
@@ -100,46 +110,11 @@ submitTaskBtn.addEventListener("click", (event) => {
     taskDialog.close();
     taskForm.reset();
     subtaskNodes.forEach(element => element.remove());
-    renderTasks(project);
+    renderTasks(project, projects);
+    saveProjects(projects);
 });
 
-projects.addProject("Website Redesign");
-projects.addProject("Mobile App Launch");
-
-const project1 = projects.projects[0];
-project1.addTask("Design Homepage", "Create wireframes and mockups", "2024-10-10", "high", []);
-project1.tasks[0].addSubtask("Create wireframe");
-project1.tasks[0].addSubtask("Design mockup");
-project1.tasks[0].addSubtask("Review with team");
-
-project1.addTask("Develop Backend", "Implement server-side logic", "2024-10-15", "medium", []);
-project1.tasks[1].addSubtask("Set up database");
-project1.tasks[1].addSubtask("Create API endpoints");
-project1.tasks[1].addSubtask("Test API responses");
-
-project1.addTask("User Testing", "Conduct testing sessions", "2024-10-20", "low", []);
-project1.tasks[2].addSubtask("Create test cases");
-project1.tasks[2].addSubtask("Schedule testing sessions");
-project1.tasks[2].addSubtask("Analyze feedback");
-
-const project2 = projects.projects[1]
-project2.addTask("App Design", "Design app interface", "2024-11-01", "high", []);
-project2.tasks[0].addSubtask("Design login screen");
-project2.tasks[0].addSubtask("Design dashboard");
-project2.tasks[0].addSubtask("Design profile page");
-
-project2.addTask("API Integration", "Integrate with backend API", "2024-11-05", "medium", []);
-project2.tasks[1].addSubtask("Connect to user API");
-project2.tasks[1].addSubtask("Connect to product API");
-project2.tasks[1].addSubtask("Test data synchronization");
-
-project2.addTask("App Testing", "Test on different devices", "2024-11-10", "low", []);
-project2.tasks[2].addSubtask("Test on Android");
-project2.tasks[2].addSubtask("Test on iOS");
-project2.tasks[2].addSubtask("Report bugs");
-
-project1.tasks[1].flipCompletionStatus();
-project1.tasks[0].checklist[1].flipCompletionStatus();
-
 renderProjects(projects);
-renderTasks(project1);
+if (projects.projects.length > 0) {
+    renderTasks(projects.projects[0], projects);
+}
