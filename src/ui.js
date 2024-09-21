@@ -21,8 +21,14 @@ export function renderProjects(projects) {
     for (let project of projects.projects) {
         const prDiv = document.createElement("div");
         prDiv.classList.add("project");
+        project.updateCompletionPercent();
         prDiv.innerHTML = `
-        <div><p>${project.title}</p></div>`;
+        <div>
+            <p>${project.title}</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: ${project.completionPercent}%;"></div>
+            </div>
+        </div>`;
 
         const editBtn = document.createElement("button");
         const deleteBtn = document.createElement("button");
@@ -44,7 +50,7 @@ export function renderProjects(projects) {
             document.querySelector("#new-pr-title").value = project.title;
             prEditDialog.showModal()
         });
-        prDiv.children[0].addEventListener("click", () => {
+        prDiv.children[0].addEventListener("click", () => { // To render tasks when clicking on project name
             renderTasks(project, projects);
             currentPrId = project.id;
         }
@@ -104,6 +110,15 @@ export function renderTasks(project, projects) {
                     moreInfo.style.display = 'none';
                     arrow.innerHTML = '&#9662;'; // Change to downward arrow when collapsed
                 }
+            });
+
+            const checkbox = todoItem.querySelector(".custom-checkbox");
+
+            checkbox.addEventListener("change", () => {
+                task.complete = checkbox.checked;
+                project.updateCompletionPercent();
+                renderProjects(projects);
+                saveProjects(projects);
             });
 
             title.addEventListener("input", () => {

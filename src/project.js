@@ -19,14 +19,17 @@ export class Project {
     }
 
     completionPercent = 0;
-    updateCompletionPercent() {
-        let length = this.tasks.length;
-        if (length == 0) { return 0.00 };
 
-        let completeCount = this.tasks.reduce((count, task) => count + (task.complete ? 1 : 0), 0);
-        let percent = (completeCount / length) * 100;
-        this.completionPercent = +percent.toFixed(2);
-    };
+    updateCompletionPercent() {
+        const length = this.tasks.length;
+        if (length === 0) {
+            this.completionPercent = 0.00;
+            return;
+        }
+
+        let completedTasks = this.tasks.filter(task => task.complete).length;
+        this.completionPercent = ((completedTasks / length) * 100).toFixed(2); // Percentage complete
+    }
 }
 
 export class Projects {
