@@ -54,6 +54,8 @@ button {
 
 button:hover {
     cursor: pointer;
+    background-color: var(--dark-green);
+    transition: background-color 0.3s ease;
 }
 
 
@@ -115,8 +117,8 @@ body {
 }
 
 .projects {
-    width: clamp(200px, 15%, 250px);
-    background-color: var(--beige);
+    width: clamp(220px, 20%, 300px);
+    background-color: var(--dark-beige);
     color: #F2F0E7;
     align-items: center;
 }
@@ -158,7 +160,7 @@ h2 {
 .addtask-btn {
     width: 12rem;
     align-self: flex-end;
-    margin-right: 4rem;
+    margin-right: 5rem;
     background-color: var(--beige);
     color: var(--white);
     font-size: 1.05rem;
@@ -186,7 +188,7 @@ h2 {
     background-color: var(--white);
     border-radius: 5px;
     width: 100%;
-    height: 10px;
+    height: 16px;
     margin-top: 5px;
     position: relative;
 }
@@ -196,4 +198,205 @@ h2 {
     height: 100%;
     border-radius: 5px;
     transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.85rem;
+    color: var(--black);
+    pointer-events: none;
+    font-weight: bold;
+}
+
+.project-name:hover {
+    cursor: pointer;
+}
+
+.project {
+    display: flex;
+    background-color: var(--beige);
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    border-radius: 6px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.project,
+.task-container {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.project:hover,
+.task-container:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.pr-left {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-right: 1rem;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.project-name {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.pr-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.icn {
+    background-color: transparent;
+    border: none;
+    flex-shrink: 0;
+}
+
+.icn {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+img {
+    width: 20px;
+    height: 20px;
+}
+
+.task-container {
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: var(--beige);
+    margin: 1rem 5rem;
+    border-radius: 8px;
+}
+
+.task-container input,
+.task-container select {
+    color: var(--white);
+    background-color: transparent;
+    border: none;
+    font-size: 1.1rem;
+}
+
+.task-title {
+    width: 60%;
+}
+
+.todo-item {
+    display: flex;
+    gap: 8px;
+    padding-left: 2rem;
+    margin-top: 2rem;
+    align-items: center;
+}
+
+.arrow {
+    order: 2;
+    font-size: 2rem;
+    margin-left: auto;
+    margin-right: 1rem;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000;
+    position: relative;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+    background-color: green;
+}
+
+input[type="checkbox"]:checked:before {
+    content: '✔';
+    color: white;
+    position: absolute;
+    top: -5px;
+    font-size: 20px;
+}
+
+.task-prompt {
+    background-color: var(--white);
+    border-color: var(--dark-beige);
+}
+
+.task-form {
+    display: flex;
+    flex-flow: nowrap column;
+    gap: 0.7rem;
+}
+
+.task-form-btns {
+    order: 2;
+    align-self: center;
+    margin-top: 1rem;
+    display: flex;
+    gap: 2rem;
+}
+
+.task-form-btns button {
+    width: 6rem;
+}
+
+.st-input-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.st-input-container input {
+    width: 75%;
+}
+
+#subtask-btn {
+    order: 1;
+}
+
+.more-info {
+    display: none;
+    flex-flow: nowrap column;
+    padding-left: 3rem;
+    padding-bottom: 1rem;
+}
+
+
+.st-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.more-info textarea {
+    width: 80%;
+    height: 60px;
+    background-color: var(--beige);
+    border: none;
+    color: var(--white);
+    resize: none;
 }
