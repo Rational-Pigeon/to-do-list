@@ -1,4 +1,4 @@
-import { Task, Subtask } from "./tasks.js";
+import { Task } from "./tasks.js";
 
 export class Project {
     constructor(id, title) {
