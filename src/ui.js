@@ -23,18 +23,23 @@ export function renderProjects(projects) {
         prDiv.classList.add("project");
         project.updateCompletionPercent();
         prDiv.innerHTML = `
-        <div>
-            <p>${project.title}</p>
-            <div class="progress-bar">
-                <div class="progress" style="width: ${project.completionPercent}%;"></div>
-            </div>
-        </div>`;
+    <div class="pr-left">
+        <p class="project-name">${project.title}</p>
+        <div class="progress-bar">
+            <div class="progress" style="width: ${project.completionPercent}%;"></div>
+            <span class="progress-text">${project.completionPercent}%</span>
+        </div>
+    </div>
+    <div class="pr-btns">
+        <button class="icn editBtn"><img src="${editIcon}" alt="Edit" width="20px" height="20px"></button>
+        <button class="icn deleteBtn"><img src="${deleteIcon}" alt="Delete" width="20px" height="20px"></button>
+    </div>
+`;
 
-        const editBtn = document.createElement("button");
-        const deleteBtn = document.createElement("button");
+        const editBtn = prDiv.querySelector(".editBtn");
+        const deleteBtn = prDiv.querySelector(".deleteBtn");
+        const prTitle = prDiv.querySelector(".project-name");
 
-        editBtn.innerHTML = `<img src="${editIcon}" alt="Edit" width="20px" height="20px"/>`;
-        deleteBtn.innerHTML = `<img src="${deleteIcon}" alt="Delete" width="20px" height="20px"/>`;
 
         editBtn.classList.add("editBtn");
         deleteBtn.classList.add("deleteBtn");
@@ -50,15 +55,14 @@ export function renderProjects(projects) {
             document.querySelector("#new-pr-title").value = project.title;
             prEditDialog.showModal()
         });
-        prDiv.children[0].addEventListener("click", () => { // To render tasks when clicking on project name
+
+        prTitle.addEventListener("click", () => { // To render tasks when clicking on project name
             renderTasks(project, projects);
             currentPrId = project.id;
         }
         );
 
 
-        prDiv.appendChild(editBtn);
-        prDiv.appendChild(deleteBtn);
         projectsDiv.appendChild(prDiv);
     }
 }
@@ -79,19 +83,20 @@ export function renderTasks(project, projects) {
             <div class="arrow">&#9662;</div> <!-- Downward arrow -->
         </div>
         <div class="more-info">
-            <textarea class="description">${task.description}</textarea>
+            <textarea class="description" rows="3" cols="20">${task.description}</textarea>
             <div class="subtasks"></div>
         </div>`
 
-            const todoItem = container.children[0];
+            const todoItem = container.querySelector(".todo-item");
             const prioritySelect = createPriorityElement(task.priority);
             const dateInput = document.createElement("input");
-            const title = todoItem.children[1];
-            const moreInfo = container.children[1];
-            const description = moreInfo.children[0];
-            const subtasksDiv = moreInfo.children[1];
-            const arrow = todoItem.children[2];
+            const title = todoItem.querySelector(".task-title");
+            const moreInfo = container.querySelector(".more-info");
+            const description = moreInfo.querySelector(".description");
+            const subtasksDiv = moreInfo.querySelector(".subtasks");
+            const arrow = todoItem.querySelector(".arrow");
             const deleteTaskButton = document.createElement("button");
+            deleteTaskButton.classList.add("icn");
             deleteTaskButton.innerHTML = `<img src="${deleteIcon}" alt="Delete" width="20px" height="20px"/>`;
 
             todoItem.appendChild(prioritySelect);
@@ -116,6 +121,18 @@ export function renderTasks(project, projects) {
 
             checkbox.addEventListener("change", () => {
                 task.complete = checkbox.checked;
+
+                if (checkbox.checked) {
+                    container.style.order = "2";
+                    container.style.backgroundColor = "rgba(128, 128, 128)";
+                    container.querySelector("textarea").style.backgroundColor = "rgba(128, 128, 128)";
+
+                } else {
+                    container.style.order = "0";
+                    container.style.backgroundColor = "";
+                    container.querySelector("textarea").style.backgroundColor = "";
+                }
+
                 project.updateCompletionPercent();
                 renderProjects(projects);
                 saveProjects(projects);
@@ -173,10 +190,10 @@ function renderSubtasks(task, container, projects) {
         stContainer.innerHTML = `
             <input type="checkbox" class="custom-checkbox" ${(subtask.complete || task.complete) ? "checked" : ""}>
             <input type="text" class="subtask-title" value="${subtask.title}">
-            <button type="button" class="subtask-del-btn">
+            <button type="button" class="icn subtask-del-btn">
                 <img src="${deleteIcon}" alt="Delete" width="20px" height="20px"/>
             </button>`
-        const subtaskDelBtn = stContainer.children[2];
+        const subtaskDelBtn = stContainer.querySelector(".subtask-del-btn");
         subtaskDelBtn.addEventListener("click", () => {
             task.removeSubtask(subtask.id)
             clearElementsByClass(container, "st-container");

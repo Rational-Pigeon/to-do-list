@@ -28,7 +28,7 @@ export class Project {
         }
 
         let completedTasks = this.tasks.filter(task => task.complete).length;
-        this.completionPercent = ((completedTasks / length) * 100).toFixed(2); // Percentage complete
+        this.completionPercent = ((completedTasks / length) * 100).toFixed(2);
     }
 }
 

@@ -34,7 +34,7 @@
             <label for="input-title">Task title</label>
             <input id="input-title" type="text" required>
             <label for="input-description">Task description</label>
-            <textarea id="input-description" rows="4" cols="50"></textarea>
+            <textarea id="input-description" rows="4" cols="40"></textarea>
             <label for="input-due">Due date</label>
             <input id="input-due" type="date">
             <label for="input-priority">Priority</label>
@@ -45,8 +45,10 @@
             </select>
             <button id="subtask-btn">add subtask</button>
 
-            <button class="submit-btn submit-task-btn" type="submit">submit</button>
-            <button class="cancel-btn task-cancel-btn">cancel</button>
+            <div class="task-form-btns">
+                <button class="submit-btn submit-task-btn" type="submit">submit</button>
+                <button class="cancel-btn task-cancel-btn">cancel</button>
+            </div>
         </form>
     </dialog>
 

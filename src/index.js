@@ -5,7 +5,7 @@ import { renderProjects, renderTasks, currentPrId } from "./ui";
 import { saveProjects, loadProjects } from "./storage";
 import { defaultData } from "./default.js";
 
-export let projects = loadProjects(); // Load projects from local storage
+export let projects = loadProjects();
 
 
 const prDialog = document.querySelector(".pr-prompt");
@@ -27,7 +27,7 @@ const addSubtaskBtn = document.querySelector("#subtask-btn");
 if (projects.projects.length === 0) {
     // No projects in local storage, initialize with default data
     projects = defaultData();
-    saveProjects(projects);  // Save default data to local storage
+    saveProjects(projects);
 }
 
 addPrBtn.addEventListener("click", () => prDialog.showModal());
@@ -39,8 +39,10 @@ prCancelBtn.addEventListener("click", () => {
 
 addTaskBtn.addEventListener("click", () => taskDialog.showModal());
 taskCancelBtn.addEventListener("click", () => {
+    const stContainers = document.querySelectorAll(".st-input-container");
     taskDialog.close();
     taskForm.reset();
+    stContainers.forEach(element => element.remove());
 });
 
 submitPrBtn.addEventListener("click", (event) => {
@@ -76,13 +78,14 @@ submitPrEditBtn.addEventListener("click", (event) => {
 addSubtaskBtn.addEventListener("click", (event) => {
     event.preventDefault();
     const stDiv = document.createElement("div");
+    stDiv.classList.add("st-input-container")
     stDiv.innerHTML = `
     <input class="input-subtask" type="text">
-    <button type="button"><img src="${deleteIcon}" alt="Delete" width="20px" height="20px"/></button>
+    <button type="button" class="icn"><img src="${deleteIcon}" alt="Delete" width="20px" height="20px"/></button>
 `;
     const stDelBtn = stDiv.children[1];
     stDelBtn.addEventListener("click", () => stDiv.remove());
-    taskDialog.appendChild(stDiv);
+    taskForm.appendChild(stDiv);
 });
 
 submitTaskBtn.addEventListener("click", (event) => {
@@ -93,6 +96,7 @@ submitTaskBtn.addEventListener("click", (event) => {
     const date = document.querySelector("#input-due").value;
     const priority = document.querySelector("#input-priority").value;
     const subtaskNodes = document.querySelectorAll(".input-subtask");
+    const stContainers = document.querySelectorAll(".st-input-container");
     const subtasks = [];
     if (!(subtaskNodes.length === 0)) {
         let i = 0;
@@ -109,7 +113,7 @@ submitTaskBtn.addEventListener("click", (event) => {
     project.addTask(title, description, date, priority, subtasks);
     taskDialog.close();
     taskForm.reset();
-    subtaskNodes.forEach(element => element.remove());
+    stContainers.forEach(element => element.remove());
     renderTasks(project, projects);
     saveProjects(projects);
 });

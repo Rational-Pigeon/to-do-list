@@ -3,10 +3,8 @@ import { Projects } from "./project";
 export const defaultData = () => {
     const projects = new Projects();
 
-    // Add first project using addProject method
     projects.addProject("Website Redesign");
 
-    // Access the first project and add tasks using addTask method
     const project1 = projects.projects[0];
     project1.addTask("Design Homepage", "Create wireframes and mockups", "2024-10-10", "high", []);
     project1.tasks[0].addSubtask("Create wireframe");
@@ -18,10 +16,8 @@ export const defaultData = () => {
     project1.tasks[1].addSubtask("Create API endpoints");
     project1.tasks[1].addSubtask("Test API responses");
 
-    // Add second project using addProject method
     projects.addProject("Mobile App Launch");
 
-    // Access the second project and add tasks using addTask method
     const project2 = projects.projects[1];
     project2.addTask("App Design", "Design app interface", "2024-11-01", "high", []);
     project2.tasks[0].addSubtask("Design login screen");
